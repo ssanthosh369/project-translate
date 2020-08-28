@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center"
     tools:context=".MainActivity">
     <TextView
         android:layout_width="wrap_content"
@@ -49,17 +50,32 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         android:text="Translate"
         android:id="@+id/translate"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Text to Speech"
+        android:id="@+id/ttsBtn"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Speak"
+        android:id="@+id/speakBtn"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
-        android:layout_margin="20sp"
-        android:text="English"/>
+        android:layout_margin="5sp"
+        android:text="Translated Text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +84,15 @@
         android:textSize="16sp"
         android:id="@+id/translatedText"
         android:layout_margin="20sp"
-        android:text=""/>
+        android:text=""
+        android:hint="Waiting for translation..."/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Copy to Clipboard"
+        android:id="@+id/clipBtn"/>
 
 
 </LinearLayout>
