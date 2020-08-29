@@ -128,17 +128,26 @@ public class TranslateActivity extends AppCompatActivity {
         mSourceText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                isNetworkAvailable();
+                if(currentNetworkStatus != isNetworkAvailable()) {
+                    currentNetworkStatus = isNetworkAvailable();
+                    setSpinnerLanguages(currentNetworkStatus);
+                }
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               // isNetworkAvailable();
+                if(currentNetworkStatus != isNetworkAvailable()) {
+                    currentNetworkStatus = isNetworkAvailable();
+                    setSpinnerLanguages(currentNetworkStatus);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                isNetworkAvailable();
+                if(currentNetworkStatus != isNetworkAvailable()) {
+                    currentNetworkStatus = isNetworkAvailable();
+                    setSpinnerLanguages(currentNetworkStatus);
+                }
             }
         });
 
@@ -214,7 +223,7 @@ public class TranslateActivity extends AppCompatActivity {
             }
         });
 
-        isNetworkAvailable();
+        setSpinnerLanguages(currentNetworkStatus);
 
     }
 
@@ -596,8 +605,11 @@ public class TranslateActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        //return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        if(activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void setSpinnerLanguages(boolean i) {
+        if(i) {
             Log.d("Language Identify", "Internet access available");
             mSourceLang.setText("All models available, first time translation to a new language will download the model");
             language = TranslateLanguage.getAllLanguages();
@@ -634,7 +646,6 @@ public class TranslateActivity extends AppCompatActivity {
                     });
         }
 
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void setClipboard(Context context, String text) {
@@ -661,11 +672,7 @@ public class TranslateActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 targetCode = TranslateLanguage.fromLanguageTag(aa.getItem(i));
                 Log.d("Language Identify", "Spinner Language: " + aa.getItem(i));
-                if(!ArrayUtils.contains( ttsLangOptions, targetCode)) {
-                    mTtsBtn.setEnabled(false);
-                } else {
-                    mTtsBtn.setEnabled(true);
-                }
+                mTtsBtn.setEnabled(false);
             }
 
             @Override
@@ -684,25 +691,19 @@ public class TranslateActivity extends AppCompatActivity {
         switch(targetCode) {
             case "en":
                 tts.setLanguage(Locale.ENGLISH);
+                mTtsBtn.setEnabled(true);
                 break;
+
             case "de":
                 tts.setLanguage(Locale.GERMAN);
+                mTtsBtn.setEnabled(true);
                 break;
+
             case "fr":
                 tts.setLanguage(Locale.FRENCH);
+                mTtsBtn.setEnabled(true);
                 break;
-            case "zh":
-                tts.setLanguage(Locale.CHINESE);
-                break;
-            case "zh-Latn":
-                tts.setLanguage(Locale.CHINESE);
-                break;
-            case "ko":
-                tts.setLanguage(Locale.KOREAN);
-                break;
-            case "ja":
-                tts.setLanguage(Locale.JAPANESE);
-                break;
+
             case "it":
                 tts.setLanguage(Locale.ITALIAN);
                 break;
