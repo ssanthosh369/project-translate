@@ -57,7 +57,7 @@ public class OcrActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ocr);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setSubtitle("Click + button to insert Image");
+        actionBar.setSubtitle("Click Image button to select an Image");
 
 
         mResultEt = findViewById(R.id.resultEt);

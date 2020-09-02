@@ -12,6 +12,8 @@ import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -66,6 +69,7 @@ public class TranslateActivity extends AppCompatActivity {
     private String[] ttsLangOptions;
     private TextToSpeech tts;
     private boolean currentNetworkStatus;
+    private MenuItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,8 @@ public class TranslateActivity extends AppCompatActivity {
         mLanguageSelector = findViewById(R.id.langSelector);
         //language = new ArrayList<>(TranslateLanguage.getAllLanguages().size());
         language = TranslateLanguage.getAllLanguages();
+        ActionBar actionBar = getSupportActionBar();
+
         currentNetworkStatus = isNetworkAvailable();
 
         Log.d("Language", "Initial all languages - " + language);
@@ -225,6 +231,28 @@ public class TranslateActivity extends AppCompatActivity {
 
         setSpinnerLanguages(currentNetworkStatus);
 
+
+
+    }
+
+    //actionbar menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //inflate menu
+        getMenuInflater().inflate(R.menu.menu_translate,menu);
+        item = menu.findItem(R.id.offlineIcon);
+            item.setVisible(!currentNetworkStatus);
+
+        return true;
+    }
+    //handle actionbar click items
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.offlineIcon) {
+            Toast.makeText(this, "No Network Connection, Only downloaded models available for translation", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void listen() {
@@ -645,6 +673,8 @@ public class TranslateActivity extends AppCompatActivity {
                         }
                     });
         }
+
+        this.invalidateOptionsMenu();
 
     }
 
